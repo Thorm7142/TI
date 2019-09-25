@@ -54,13 +54,6 @@
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jsp_imgsrc" min="-2" pref="326" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" pref="18" max="32767" attributes="0"/>
-                      <Component id="jb_DestToSrc" min="-2" pref="65" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jsc_imgdest" min="-2" pref="313" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="JB_SelectFile" min="-2" max="-2" attributes="0"/>
                           <Component id="JB_reset" min="-2" pref="69" max="-2" attributes="0"/>
@@ -105,18 +98,26 @@
                                               </Group>
                                           </Group>
                                       </Group>
-                                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                                              <Component id="jLabel1" min="-2" pref="56" max="-2" attributes="0"/>
+                                          <Group type="102" attributes="0">
+                                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                                                  <Group type="102" alignment="1" attributes="0">
+                                                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                                                      <Component id="jLabel1" min="-2" pref="56" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" attributes="0">
+                                                  <Component id="JCB_Kirsch" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                                                  <Component id="JCB_Roberts" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                                              </Group>
                                           </Group>
-                                      </Group>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="JCB_Kirsch" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
-                                          <Component id="JCB_Roberts" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="JB_ROI" min="-2" pref="69" max="-2" attributes="0"/>
+                                          </Group>
                                       </Group>
                                   </Group>
                                   <Component id="JB_Multi_Treshold" min="-2" max="-2" attributes="0"/>
@@ -137,6 +138,13 @@
                           <Component id="JTF_Morpho" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="jsp_imgsrc" min="-2" pref="326" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" pref="18" max="32767" attributes="0"/>
+                      <Component id="jb_DestToSrc" min="-2" pref="65" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jsc_imgdest" min="-2" pref="313" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
@@ -216,23 +224,17 @@
                                   <Component id="JB_Median" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="JB_Laplacian" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="JB_Gauss" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="JB_ROI" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
               </Group>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="JB_Fermeture" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="7" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="JB_Multi_Treshold" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="JB_Color" alignment="3" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
+              <EmptySpace pref="7" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="JB_Multi_Treshold" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="JB_Color" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="JB_Fermeture" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -278,6 +280,10 @@
               <Dimension value="[500, 500]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jl_imageSourceMousePressed"/>
+            <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jl_imageSourceMouseReleased"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -527,6 +533,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JB_Multi_TresholdActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="JB_ROI">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="R.O.I."/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JB_ROIActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
