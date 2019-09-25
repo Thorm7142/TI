@@ -5,6 +5,11 @@
  */
 package imageprocessing;
 
+import static imageprocessing.ColorChooserWindow.copyImage;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author alexa
@@ -15,9 +20,17 @@ public class multiThresholdWindow extends javax.swing.JFrame {
      * Creates new form multiThresholdWindow
      */
     private MainWindow mw;
+    private BufferedImage ImgSrc;
+    private BufferedImage ImgTmp;
     
     public void setMainWindow(MainWindow m){mw = m;}
     public MainWindow getMainWindow(){return mw;}
+    
+    public void setImgTmp(BufferedImage img){ImgTmp = img;}
+    public BufferedImage getImgTmp(){return ImgTmp;}
+    
+    public void setImgSrc(BufferedImage img){ImgSrc = img;}
+    public BufferedImage getImgSrc(){return ImgSrc;}
     
     public multiThresholdWindow() {
         initComponents();
@@ -27,6 +40,11 @@ public class multiThresholdWindow extends javax.swing.JFrame {
     {
         initComponents();
         setMainWindow(parent);
+        BufferedImage img = copyImage(mw.getImgSrc());
+        setImgSrc(copyImage(img));
+        ImageIcon imageIcon = new ImageIcon(img);
+        jl_mt_image.setIcon(imageIcon);
+        
     }
     
     
@@ -46,9 +64,32 @@ public class multiThresholdWindow extends javax.swing.JFrame {
         JB_MTH_OK = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jl_mt_image = new javax.swing.JLabel();
+        JB_MTH_Appliquer = new javax.swing.JButton();
+        JB_MTH_Annuler = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jtf_de_1 = new javax.swing.JTextField();
+        jtf_de_2 = new javax.swing.JTextField();
+        jtf_de_3 = new javax.swing.JTextField();
+        jtf_a_1 = new javax.swing.JTextField();
+        jtf_a_2 = new javax.swing.JTextField();
+        jtf_a_3 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jl_val1 = new javax.swing.JLabel();
+        jl_val2 = new javax.swing.JLabel();
+        jl_val3 = new javax.swing.JLabel();
+        JB_MTH_1 = new javax.swing.JButton();
+        JB_MTH_2 = new javax.swing.JButton();
+        JB_MTH_3 = new javax.swing.JButton();
+        JB_MTH_Reset = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Multi_threshold");
+        addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                ImageSrcMousePressed(evt);
+            }
+        });
 
         JSLIDER_MTH_1.setMaximum(255);
         JSLIDER_MTH_1.setValue(128);
@@ -79,69 +120,309 @@ public class multiThresholdWindow extends javax.swing.JFrame {
         jLabel1.setText("MULTI THRESHOLD");
 
         JB_MTH_OK.setText("OK");
+        JB_MTH_OK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_MTH_OKActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(jl_mt_image);
+
+        JB_MTH_Appliquer.setText("Appliquer");
+        JB_MTH_Appliquer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_MTH_AppliquerActionPerformed(evt);
+            }
+        });
+
+        JB_MTH_Annuler.setText("Annuler");
+        JB_MTH_Annuler.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_MTH_AnnulerActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("De :");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setText("À :");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setText("Remplacer :");
+
+        JB_MTH_1.setText("Ok");
+        JB_MTH_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_MTH_1ActionPerformed(evt);
+            }
+        });
+
+        JB_MTH_2.setText("Ok");
+        JB_MTH_2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_MTH_2ActionPerformed(evt);
+            }
+        });
+
+        JB_MTH_3.setText("Ok");
+        JB_MTH_3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_MTH_3ActionPerformed(evt);
+            }
+        });
+
+        JB_MTH_Reset.setText("Reset");
+        JB_MTH_Reset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_MTH_ResetActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JSLIDER_MTH_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JSLIDER_MTH_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JSLIDER_MTH_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(192, 192, 192)
-                        .addComponent(JB_MTH_OK, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel2)
+                                .addGap(62, 62, 62)
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(88, 88, 88))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jtf_de_1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jtf_de_2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jtf_de_3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(JSLIDER_MTH_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jtf_a_1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(JB_MTH_1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addGap(77, 77, 77)
+                                                        .addComponent(jl_val3, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(JB_MTH_Reset, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                            .addComponent(JSLIDER_MTH_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                            .addComponent(jtf_a_3, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                            .addComponent(JB_MTH_3, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(layout.createSequentialGroup()
+                                                            .addComponent(JSLIDER_MTH_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                            .addComponent(jtf_a_2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                            .addComponent(JB_MTH_2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(140, 140, 140)
+                                        .addComponent(jl_val1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(137, 137, 137)
+                                        .addComponent(jl_val2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 315, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(209, 209, 209)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(226, 226, 226)
+                                .addComponent(JB_MTH_OK, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(JB_MTH_Appliquer)
+                                .addGap(18, 18, 18)
+                                .addComponent(JB_MTH_Annuler, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(244, 244, 244)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(19, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44))
+                        .addGap(46, 46, 46)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JSLIDER_MTH_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtf_de_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jtf_a_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(JB_MTH_1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jl_val1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JSLIDER_MTH_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtf_de_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jtf_a_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(JB_MTH_2)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jl_val2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(25, 25, 25)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JSLIDER_MTH_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtf_de_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jtf_a_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(JB_MTH_3)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jl_val3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(JB_MTH_Reset))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(JSLIDER_MTH_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(JSLIDER_MTH_2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(JSLIDER_MTH_3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(JB_MTH_OK)
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(JB_MTH_OK)
+                    .addComponent(JB_MTH_Appliquer)
+                    .addComponent(JB_MTH_Annuler))
+                .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void JSLIDER_MTH_1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_JSLIDER_MTH_1StateChanged
-        // TODO add your handling code here:
+        jl_val1.setText(String.valueOf(JSLIDER_MTH_1.getValue()));
+        if(!jtf_de_1.getText().equals("") && !jtf_a_1.getText().equals(""))
+        {
+            Threshold(JSLIDER_MTH_1.getValue(), Integer.parseInt(jtf_de_1.getText()), Integer.parseInt(jtf_a_1.getText()));
+        }
     }//GEN-LAST:event_JSLIDER_MTH_1StateChanged
 
     private void JSLIDER_MTH_2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_JSLIDER_MTH_2StateChanged
-        // TODO add your handling code here:
+        jl_val2.setText(String.valueOf(JSLIDER_MTH_2.getValue()));
+        if(!jtf_de_2.getText().equals("") && !jtf_a_2.getText().equals(""))
+        {
+            Threshold(JSLIDER_MTH_2.getValue(), Integer.parseInt(jtf_de_2.getText()), Integer.parseInt(jtf_a_2.getText()));
+        }
+        
     }//GEN-LAST:event_JSLIDER_MTH_2StateChanged
 
     private void JSLIDER_MTH_3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_JSLIDER_MTH_3StateChanged
-        // TODO add your handling code here:
+        jl_val3.setText(String.valueOf(JSLIDER_MTH_3.getValue()));
+        if(!jtf_de_3.getText().equals("") && !jtf_a_3.getText().equals(""))
+        {
+            Threshold(JSLIDER_MTH_3.getValue(), Integer.parseInt(jtf_de_3.getText()), Integer.parseInt(jtf_a_3.getText()));
+        }
     }//GEN-LAST:event_JSLIDER_MTH_3StateChanged
 
+    private void ImageSrcMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImageSrcMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ImageSrcMousePressed
+
+    private void JB_MTH_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_1ActionPerformed
+        setImgSrc(copyImage(getImgTmp()));
+    }//GEN-LAST:event_JB_MTH_1ActionPerformed
+
+    private void JB_MTH_2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_2ActionPerformed
+        setImgSrc(copyImage(getImgTmp()));
+    }//GEN-LAST:event_JB_MTH_2ActionPerformed
+
+    private void JB_MTH_3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_3ActionPerformed
+        setImgSrc(copyImage(getImgTmp()));
+    }//GEN-LAST:event_JB_MTH_3ActionPerformed
+
+    private void JB_MTH_ResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_ResetActionPerformed
+        setImgSrc(copyImage(mw.getImgSrc()));
+    }//GEN-LAST:event_JB_MTH_ResetActionPerformed
+
+    private void JB_MTH_AppliquerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_AppliquerActionPerformed
+        mw.applyImage(copyImage(getImgTmp()));
+    }//GEN-LAST:event_JB_MTH_AppliquerActionPerformed
+
+    private void JB_MTH_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_OKActionPerformed
+        mw.applyImage(copyImage(getImgTmp()));
+        dispose();
+    }//GEN-LAST:event_JB_MTH_OKActionPerformed
+
+    private void JB_MTH_AnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_AnnulerActionPerformed
+        dispose();
+    }//GEN-LAST:event_JB_MTH_AnnulerActionPerformed
+
+    public BufferedImage Threshold(int val, int min, int max)
+    {        
+        
+        BufferedImage tmp = copyImage(getImgSrc());
+        
+        int width = tmp.getWidth(); 
+        int height = tmp.getHeight();
+        
+        //Image dimg = tmp.getScaledInstance((int)(tmp.getWidth()), (int)(tmp.getHeight()), Image.SCALE_SMOOTH);
+        
+        for (int y = 0; y < height; y++) 
+        { 
+            for (int x = 0; x < width; x++) 
+            { 
+                int p = tmp.getRGB(x,y); 
+  
+                int a = (p>>24)&0xff; 
+                int r = (p>>16)&0xff;
+                int g = (p>>8)&0xff; 
+                int b = p&0xff; 
+                
+                int avg = (r+g+b)/3; 
+                
+                
+                if(avg > min && avg < max)
+                {
+                    avg = val;
+                }
+                
+                a = 255; // opaque, pour etre sur
+
+                p = (a<<24) | (avg<<16) | (avg<<8) | avg; 
+
+                tmp.setRGB(x, y, p); 
+            } 
+        }
+        setImgTmp(copyImage(tmp));
+        ImageIcon imageIcon = new ImageIcon(tmp);
+
+        jl_mt_image.setIcon(imageIcon);
+        
+        return tmp;
+    }
+    
+    public static BufferedImage copyImage(BufferedImage source){
+        BufferedImage b = new BufferedImage(source.getWidth(), source.getHeight(), source.getType());
+        Graphics g = b.getGraphics();
+        g.drawImage(source, 0, 0, null);
+        g.dispose();
+        return b;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -178,12 +459,30 @@ public class multiThresholdWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton JB_MTH_1;
+    private javax.swing.JButton JB_MTH_2;
+    private javax.swing.JButton JB_MTH_3;
+    private javax.swing.JButton JB_MTH_Annuler;
+    private javax.swing.JButton JB_MTH_Appliquer;
     private javax.swing.JButton JB_MTH_OK;
+    private javax.swing.JButton JB_MTH_Reset;
     private javax.swing.JSlider JSLIDER_MTH_1;
     private javax.swing.JSlider JSLIDER_MTH_2;
     private javax.swing.JSlider JSLIDER_MTH_3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jl_mt_image;
+    private javax.swing.JLabel jl_val1;
+    private javax.swing.JLabel jl_val2;
+    private javax.swing.JLabel jl_val3;
+    private javax.swing.JTextField jtf_a_1;
+    private javax.swing.JTextField jtf_a_2;
+    private javax.swing.JTextField jtf_a_3;
+    private javax.swing.JTextField jtf_de_1;
+    private javax.swing.JTextField jtf_de_2;
+    private javax.swing.JTextField jtf_de_3;
     // End of variables declaration//GEN-END:variables
 }

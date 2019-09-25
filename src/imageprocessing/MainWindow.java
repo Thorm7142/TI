@@ -1,5 +1,4 @@
 /* 
- * Licence Eliott van der Straten-Waillet
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -109,9 +108,9 @@ public class MainWindow extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Traitement d'Image");
 
         JB_SelectFile.setText("Charger Fichier");
         JB_SelectFile.addActionListener(new java.awt.event.ActionListener() {
@@ -321,9 +320,6 @@ public class MainWindow extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
-
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
 
@@ -677,7 +673,8 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_JB_resetActionPerformed
 
     private void JB_Multi_TresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_Multi_TresholdActionPerformed
-        
+        multiThresholdWindow mtw = new multiThresholdWindow(this);
+        mtw.setVisible(true);
     }//GEN-LAST:event_JB_Multi_TresholdActionPerformed
 
     private void JB_ColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_ColorActionPerformed
@@ -715,26 +712,7 @@ public class MainWindow extends javax.swing.JFrame {
         x1 = evt.getX();
         y1 = evt.getY(); 
     }//GEN-LAST:event_jl_imageSourceMousePressed
-                            
-
-    private void ImageSrcMouseReleased(java.awt.event.MouseEvent evt) {                                       
-        x2 = evt.getX();
-        y2 = evt.getY(); 
-        
-        BufferedImage img = copyImage(getImgSrc());
-        
-        // on calcule le rectangle selectionné et on affiche l'image correspondante en destination 
-        if(JB_ROI.getText().equals("Select")) {
-            Rectangle rect = new Rectangle(x1, y1, x2-x1, y2-y1); 
-            JB_ROI.setText("R.O.I."); 
-            img = img.getSubimage((int)(rect.x), (int)(rect.y), (int)(rect.width), (int)(rect.height)); 
-            
-            Icon ico = new ImageIcon(img);
-            jl_imageDest.setIcon(ico); 
-        }
-    }           
-    
-    
+      
     public void setImage(JLabel jl, String str)
     {   
         // Dessine une image du chemin str dans le label jl
@@ -1609,7 +1587,7 @@ public class MainWindow extends javax.swing.JFrame {
     return bimage;
     }
     
-    public void applyColor(BufferedImage img)
+    public void applyImage(BufferedImage img)
     {        
         setImgTmp(copyImage(img));
         ImageIcon imageIcon = new ImageIcon(img);
@@ -1758,7 +1736,6 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton jb_DestToSrc;

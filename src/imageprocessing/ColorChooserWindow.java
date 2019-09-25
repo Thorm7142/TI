@@ -24,7 +24,7 @@ public class ColorChooserWindow extends javax.swing.JFrame implements ChangeList
     public void setMainWindow(MainWindow m){mw = m;}
     public MainWindow getMainWindow(){return mw;}
     
-        public void setImgTmp(BufferedImage img){ImgTmp = img;}
+    public void setImgTmp(BufferedImage img){ImgTmp = img;}
     public BufferedImage getImgTmp(){return ImgTmp;}
     
     public ColorChooserWindow() {
@@ -139,12 +139,12 @@ public class ColorChooserWindow extends javax.swing.JFrame implements ChangeList
     }//GEN-LAST:event_JB_CC_AnnulerActionPerformed
 
     private void JB_CC_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_CC_OKActionPerformed
-        mw.applyColor(copyImage(getImgTmp()));
+        mw.applyImage(copyImage(getImgTmp()));
         dispose();
     }//GEN-LAST:event_JB_CC_OKActionPerformed
 
     private void JB_CC_AppliquerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_CC_AppliquerActionPerformed
-        mw.applyColor(copyImage(getImgTmp()));
+        mw.applyImage(copyImage(getImgTmp()));
     }//GEN-LAST:event_JB_CC_AppliquerActionPerformed
     
     public void stateChanged(ChangeEvent e) 
