@@ -7,14 +7,15 @@
         <Menu class="javax.swing.JMenu" name="jMenu1">
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
+            <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="JMI_Exit">
               <Properties>
-                <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+                <Property name="text" type="java.lang.String" value="Exit"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JMI_ExitActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>
@@ -49,7 +50,15 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="jsp_imgsrc" min="-2" pref="326" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" pref="18" max="32767" attributes="0"/>
+                      <Component id="jb_DestToSrc" min="-2" pref="65" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jsc_imgdest" min="-2" pref="313" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="JB_SelectFile" min="-2" max="-2" attributes="0"/>
                           <Component id="JB_reset" min="-2" pref="69" max="-2" attributes="0"/>
@@ -58,7 +67,7 @@
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="JB_Color" max="32767" attributes="0"/>
                           <Component id="jb_neg" max="32767" attributes="0"/>
-                          <Component id="JB_Median" max="32767" attributes="0"/>
+                          <Component id="JB_Median" alignment="1" max="32767" attributes="0"/>
                           <Component id="JB_Mean" max="32767" attributes="0"/>
                           <Component id="JBGreyscale" max="32767" attributes="0"/>
                       </Group>
@@ -94,36 +103,40 @@
                                               </Group>
                                           </Group>
                                       </Group>
+                                      <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                                                  <Group type="102" alignment="1" attributes="0">
-                                                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                                                      <Component id="jLabel1" min="-2" pref="56" max="-2" attributes="0"/>
-                                                  </Group>
+                                                  <Component id="jLabel1" min="-2" pref="56" max="-2" attributes="0"/>
                                               </Group>
-                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
                                                   <Component id="JCB_Kirsch" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
                                                   <Component id="JCB_Roberts" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="JB_ROI" min="-2" pref="69" max="-2" attributes="0"/>
+                                              <Component id="jl_sigma" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                              <Component id="jtf_sigma" min="-2" pref="54" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
-                                  <Component id="JB_Multi_Treshold" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Component id="JB_Multi_Treshold" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="JB_ROI" min="-2" pref="69" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="JB_Fermeture" max="32767" attributes="0"/>
-                                  <Component id="JB_Dilatation1" max="32767" attributes="0"/>
-                                  <Component id="JB_Erosion" max="32767" attributes="0"/>
-                                  <Component id="JB_Ouverture" alignment="0" max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="JB_Dilatation1" max="32767" attributes="0"/>
+                                      <Component id="JB_Erosion" max="32767" attributes="0"/>
+                                      <Component id="JB_Ouverture" alignment="0" pref="81" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="JB_Fermeture" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -133,22 +146,19 @@
                           <Component id="jButton1" alignment="0" pref="59" max="32767" attributes="0"/>
                           <Component id="JTF_Morpho" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="jsp_imgsrc" min="-2" pref="326" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" pref="18" max="32767" attributes="0"/>
-                      <Component id="jb_DestToSrc" min="-2" pref="65" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jsc_imgdest" min="-2" pref="313" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="27" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
               <Component id="jl_Threshold" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="167" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+              <Component id="jl_ROI" min="-2" pref="254" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -159,80 +169,80 @@
               <Component id="jl_Threshold" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="slider_threshold1" pref="25" max="32767" attributes="0"/>
+                  <Component id="jl_threshold" alignment="0" min="-2" pref="22" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="jb_zoom" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jl_fois" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jtf_zoom_coeff" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="JBGreyscale" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="JB_SelectFile" alignment="0" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="18" pref="18" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jl_threshold" min="-2" pref="22" max="-2" attributes="0"/>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JB_Erosion" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JB_Dilatation1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JTF_Morpho" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="JB_Ouverture" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                      <Component id="jb_zoom" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jl_fois" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jtf_zoom_coeff" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="JBGreyscale" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="JB_SelectFile" alignment="0" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="JB_Sobel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="JB_Kirsch" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="JCB_Kirsch" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jb_neg" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="slider_threshold1" pref="29" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+                              <Component id="JB_reset" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JB_Erosion" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="9" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JB_Dilatation1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JTF_Morpho" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="JB_Ouverture" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="JB_Sobel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="JB_Kirsch" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="JCB_Kirsch" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jb_neg" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                                      <Component id="JB_reset" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JB_Prewitt" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JB_Roberts" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JCB_Roberts" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JB_Mean" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="JB_Median" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JB_Laplacian" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JB_Gauss" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="JB_ROI" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JB_Prewitt" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JB_Roberts" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JCB_Roberts" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JB_Mean" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JB_Median" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JB_Laplacian" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JB_Gauss" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jl_sigma" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jtf_sigma" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="7" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="JB_Multi_Treshold" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JB_Color" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="JB_Fermeture" alignment="3" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="5" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="JB_Color" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JB_ROI" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="JB_Multi_Treshold" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="JB_Fermeture" min="-2" pref="21" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+              <Component id="jl_ROI" min="-2" pref="21" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                       <Component id="jsp_imgsrc" max="32767" attributes="0"/>
@@ -241,10 +251,9 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="184" max="-2" attributes="0"/>
                       <Component id="jb_DestToSrc" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="158" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="141" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -506,6 +515,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Gauss"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JB_GaussActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jl_Threshold">
       <Properties>
@@ -538,6 +550,20 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JB_ROIActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jl_ROI">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="14" style="0"/>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jtf_sigma">
+    </Component>
+    <Component class="javax.swing.JLabel" name="jl_sigma">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Sigma : "/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

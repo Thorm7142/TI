@@ -82,6 +82,9 @@ public class multiThresholdWindow extends javax.swing.JFrame {
         JB_MTH_2 = new javax.swing.JButton();
         JB_MTH_3 = new javax.swing.JButton();
         JB_MTH_Reset = new javax.swing.JButton();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jm_aide = new javax.swing.JMenu();
+        JMI_Aide = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Multi_threshold");
@@ -179,6 +182,21 @@ public class multiThresholdWindow extends javax.swing.JFrame {
             }
         });
 
+        jm_aide.setText("Aide");
+        jm_aide.setToolTipText("");
+
+        JMI_Aide.setText("Aide");
+        JMI_Aide.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JMI_AideActionPerformed(evt);
+            }
+        });
+        jm_aide.add(JMI_Aide);
+
+        jMenuBar1.add(jm_aide);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -258,7 +276,7 @@ public class multiThresholdWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -302,7 +320,7 @@ public class multiThresholdWindow extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(JB_MTH_OK)
                     .addComponent(JB_MTH_Appliquer)
@@ -370,6 +388,11 @@ public class multiThresholdWindow extends javax.swing.JFrame {
     private void JB_MTH_AnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MTH_AnnulerActionPerformed
         dispose();
     }//GEN-LAST:event_JB_MTH_AnnulerActionPerformed
+
+    private void JMI_AideActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMI_AideActionPerformed
+        JDAide jda = new JDAide(this, false);
+        jda.setVisible(true);
+    }//GEN-LAST:event_JMI_AideActionPerformed
 
     public BufferedImage Threshold(int val, int min, int max)
     {        
@@ -466,6 +489,7 @@ public class multiThresholdWindow extends javax.swing.JFrame {
     private javax.swing.JButton JB_MTH_Appliquer;
     private javax.swing.JButton JB_MTH_OK;
     private javax.swing.JButton JB_MTH_Reset;
+    private javax.swing.JMenuItem JMI_Aide;
     private javax.swing.JSlider JSLIDER_MTH_1;
     private javax.swing.JSlider JSLIDER_MTH_2;
     private javax.swing.JSlider JSLIDER_MTH_3;
@@ -473,11 +497,13 @@ public class multiThresholdWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jl_mt_image;
     private javax.swing.JLabel jl_val1;
     private javax.swing.JLabel jl_val2;
     private javax.swing.JLabel jl_val3;
+    private javax.swing.JMenu jm_aide;
     private javax.swing.JTextField jtf_a_1;
     private javax.swing.JTextField jtf_a_2;
     private javax.swing.JTextField jtf_a_3;

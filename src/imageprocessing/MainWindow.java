@@ -11,7 +11,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +46,7 @@ public class MainWindow extends javax.swing.JFrame {
     private String filepath;
     
     int x1, y1, x2, y2;
+    int ROI = 0;
     
     public void setImgSrc(BufferedImage img){ImgSrc = img;}
     public BufferedImage getImgSrc(){return ImgSrc;}
@@ -105,9 +109,12 @@ public class MainWindow extends javax.swing.JFrame {
         JB_Color = new javax.swing.JButton();
         JB_Multi_Treshold = new javax.swing.JButton();
         JB_ROI = new javax.swing.JButton();
+        jl_ROI = new javax.swing.JLabel();
+        jtf_sigma = new javax.swing.JTextField();
+        jl_sigma = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        JMI_Exit = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Traitement d'Image");
@@ -284,6 +291,11 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         JB_Gauss.setText("Gauss");
+        JB_Gauss.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_GaussActionPerformed(evt);
+            }
+        });
 
         jl_Threshold.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jl_Threshold.setText("Threshold :");
@@ -309,15 +321,20 @@ public class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("File");
+        jl_ROI.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
-        jMenuItem1.setText("jMenuItem1");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        jl_sigma.setText("Sigma : ");
+
+        jMenu1.setText("File");
+        jMenu1.setToolTipText("");
+
+        JMI_Exit.setText("Exit");
+        JMI_Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                JMI_ExitActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jMenu1.add(JMI_Exit);
 
         jMenuBar1.add(jMenu1);
 
@@ -331,6 +348,13 @@ public class MainWindow extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jsp_imgsrc, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 18, Short.MAX_VALUE)
+                        .addComponent(jb_DestToSrc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jsc_imgdest, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(JB_SelectFile)
                             .addComponent(JB_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -338,7 +362,7 @@ public class MainWindow extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(JB_Color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jb_neg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JB_Median, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(JB_Median, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(JB_Mean, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(JBGreyscale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -367,45 +391,45 @@ public class MainWindow extends javax.swing.JFrame {
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                     .addComponent(JB_Gauss, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                     .addComponent(JB_Roberts, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))))
+                                        .addGap(4, 4, 4)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(4, 4, 4)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jLabel2)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                        .addGap(9, 9, 9)
-                                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addGap(19, 19, 19)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(JCB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(JCB_Roberts, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                             .addGroup(layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(JB_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addComponent(JB_Multi_Treshold))
+                                                .addComponent(jl_sigma)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jtf_sigma, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(JB_Multi_Treshold)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(JB_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(51, 51, 51)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(JB_Fermeture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(JB_Dilatation1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(JB_Erosion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(JB_Ouverture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(JB_Dilatation1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(JB_Erosion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(JB_Ouverture, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
+                                    .addComponent(JB_Fermeture))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jl_threshold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
                             .addComponent(JTF_Morpho))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jsp_imgsrc, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 18, Short.MAX_VALUE)
-                        .addComponent(jb_DestToSrc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jsc_imgdest, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(19, 19, 19))
+                        .addGap(0, 27, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jl_Threshold)
                 .addGap(167, 167, 167))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(56, 56, 56)
+                .addComponent(jl_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -414,62 +438,64 @@ public class MainWindow extends javax.swing.JFrame {
                 .addComponent(jl_Threshold)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jl_threshold, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(slider_threshold1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                    .addComponent(jl_threshold, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jb_zoom)
+                        .addComponent(jl_fois)
+                        .addComponent(jtf_zoom_coeff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(JBGreyscale))
+                    .addComponent(JB_SelectFile))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JB_Erosion)
+                            .addComponent(jButton1))
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JB_Dilatation1)
+                            .addComponent(JTF_Morpho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(JB_Ouverture))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(JB_Sobel)
+                                .addComponent(JB_Kirsch)
+                                .addComponent(jLabel2)
+                                .addComponent(JCB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jb_neg))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jb_zoom)
-                                        .addComponent(jl_fois)
-                                        .addComponent(jtf_zoom_coeff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(JBGreyscale))
-                                    .addComponent(JB_SelectFile))
-                                .addGap(7, 7, 7))
-                            .addComponent(slider_threshold1, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(JB_Erosion)
-                                    .addComponent(jButton1))
-                                .addGap(9, 9, 9)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(JB_Dilatation1)
-                                    .addComponent(JTF_Morpho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(JB_Ouverture))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(JB_Sobel)
-                                        .addComponent(JB_Kirsch)
-                                        .addComponent(jLabel2)
-                                        .addComponent(JCB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jb_neg))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addComponent(JB_reset)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(JB_Prewitt)
-                                    .addComponent(JB_Roberts)
-                                    .addComponent(jLabel1)
-                                    .addComponent(JCB_Roberts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(JB_Mean))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(JB_Median)
-                                    .addComponent(JB_Laplacian)
-                                    .addComponent(JB_Gauss)
-                                    .addComponent(JB_ROI))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JB_Multi_Treshold)
-                    .addComponent(JB_Color)
-                    .addComponent(JB_Fermeture))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(3, 3, 3)
+                                .addComponent(JB_reset)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JB_Prewitt)
+                            .addComponent(JB_Roberts)
+                            .addComponent(jLabel1)
+                            .addComponent(JCB_Roberts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JB_Mean))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JB_Median)
+                            .addComponent(JB_Laplacian)
+                            .addComponent(JB_Gauss)
+                            .addComponent(jl_sigma)
+                            .addComponent(jtf_sigma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 5, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JB_Color)
+                            .addComponent(JB_ROI)
+                            .addComponent(JB_Multi_Treshold)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(JB_Fermeture, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(16, 16, 16)
+                .addComponent(jl_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jsp_imgsrc)
@@ -477,8 +503,7 @@ public class MainWindow extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(184, 184, 184)
                         .addComponent(jb_DestToSrc)
-                        .addGap(158, 158, 158)))
-                .addGap(28, 28, 28))
+                        .addGap(141, 141, 141))))
         );
 
         pack();
@@ -512,30 +537,29 @@ public class MainWindow extends javax.swing.JFrame {
         Greyscale(jl_imageDest, null);
     }//GEN-LAST:event_JBGreyscaleActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    private void JMI_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMI_ExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_JMI_ExitActionPerformed
 
     private void jb_zoomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_zoomActionPerformed
         
-        BufferedImage l = copyImage(getImgSrc());
+        BufferedImage img = copyImage(getImgSrc());
         String s = jtf_zoom_coeff.getText();
         if(!(s.equals(""))) // Si le champs n'est pas vide
         {
             float coeff = Float.parseFloat(s);       
         
-            Image dimg = l.getScaledInstance((int)(l.getWidth()*coeff), (int)(l.getHeight()*coeff), Image.SCALE_DEFAULT);
+            Image dimg = img.getScaledInstance((int)(img.getWidth()*coeff), (int)(img.getHeight()*coeff), Image.SCALE_DEFAULT);
             
-            BufferedImage tmp = copyImage(toBufferedImage(dimg));
+            BufferedImage tmp = copyImage(toBufferedImage(dimg));          
             
-            setImgTmp(tmp);
+            setImgTmp(copyImage(tmp));
             
-            ImageIcon imageIcon = new ImageIcon(dimg);
+            ImageIcon imageIcon = new ImageIcon(tmp);
             
             jl_imageDest.setIcon(imageIcon);
         }
     }//GEN-LAST:event_jb_zoomActionPerformed
-
     
     
     private void jtf_zoom_coeffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_zoom_coeffActionPerformed
@@ -684,9 +708,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void JB_ROIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_ROIActionPerformed
         if(JB_ROI.getText().equals("R.O.I.")) {
-            JB_ROI.setText("Select"); 
-        } else if(JB_ROI.getText().equals("Select")) {
-            JB_ROI.setText("R.O.I."); 
+            jl_ROI.setText("SELECTION DE ROI EN COURS");
+            ROI = 1;  
         }
     }//GEN-LAST:event_JB_ROIActionPerformed
 
@@ -697,14 +720,16 @@ public class MainWindow extends javax.swing.JFrame {
         BufferedImage img = copyImage(getImgSrc());
         
         // on calcule le rectangle selectionné et on affiche l'image correspondante en destination 
-        if(JB_ROI.getText().equals("Select")) {
+        if(ROI == 1) {
             Rectangle rect = new Rectangle(x1, y1, x2-x1, y2-y1); 
             JB_ROI.setText("R.O.I."); 
+            jl_ROI.setText("");
             img = img.getSubimage((int)(rect.x), (int)(rect.y), (int)(rect.width), (int)(rect.height)); 
             
             setImgTmp(copyImage(img));
             Icon ico = new ImageIcon(img);
             jl_imageDest.setIcon(ico); 
+            ROI = 0;
         }
     }//GEN-LAST:event_jl_imageSourceMouseReleased
 
@@ -712,6 +737,11 @@ public class MainWindow extends javax.swing.JFrame {
         x1 = evt.getX();
         y1 = evt.getY(); 
     }//GEN-LAST:event_jl_imageSourceMousePressed
+
+    private void JB_GaussActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_GaussActionPerformed
+        double sigma = Double.parseDouble(jtf_sigma.getText());
+        GaussianFilter(sigma);
+    }//GEN-LAST:event_JB_GaussActionPerformed
       
     public void setImage(JLabel jl, String str)
     {   
@@ -751,30 +781,147 @@ public class MainWindow extends javax.swing.JFrame {
         return res;
     }
     
-    public void GaussianFilter()
+    public void GaussianFilter(double sigma)
     {
-        double sigma = 0.2;
         int taille = (int) (2* Math.ceil((3*sigma)) + 1);
         
-        System.out.println("taille = " + taille);
-        
         double[][] masque = new double[taille][taille];
+        int x, y, i = 0, j = 0;
+        int pixel;
+        
+        x = -(int)(Math.floor(taille/2));
+        y = -(int)(Math.floor(taille/2));
         
         
-        for(int i = 0; i < taille; i++)
+        // Calcul du masque
+        for(i = 0; i < taille; i++)
         {
-            for(int j = 0; j < taille; j++)
+            x = -(int)(Math.floor(taille/2));
+            for(j = 0; j < taille; j++)
             {
-                masque[i][j] = 0; 
+                masque[i][j] = Gauss(x, y, sigma);
+                x++;
+            }
+            y++;
+        }
+        
+        // Calcul de la matrice normalisée entière
+        double tmpmin = masque[0][0];
+        double sum = 0;
+        for(i = 0; i < taille; i++)
+        {
+            for(j = 0; j < taille; j++)
+            {
+                masque[i][j] = masque[i][j]/tmpmin;
+                sum += masque[i][j];
             }
         }
         
+        int tot = (int)sum;
         
+        BufferedImage img = copyImage(getImgSrc());
+        BufferedImage tmp = copyImage(getImgSrc());
         
-        for(int i = (0-taille+1); i < (taille-1); i++)
-        {
-            
+        int[][] P = new int[taille][taille]; // Pixel
+        
+        int[][] r = new int[taille][taille];
+        int[][] g = new int[taille][taille];
+        int[][] b = new int[taille][taille];
+          
+        int width = img.getWidth(); 
+        int height = img.getHeight(); 
+  
+        int k, l;
+        double resR = 0;
+        double resB = 0;
+        double resG = 0;
+        
+        x = -(int)(Math.floor(taille/2));
+        y = -(int)(Math.floor(taille/2));
+        
+        // boucle de parcours de l'image
+        for (i = 0; i < width; i++) 
+        { 
+            for (j = 0; j < height; j++) 
+            { 
+               try
+               {
+                   // Recuperation des taille*taille pixels autours du pixel actuel
+                   for(k = 0; k < taille; k++)
+                   {
+                       for(l = 0; l < taille; l++)
+                       {
+                           P[k][l] = img.getRGB(i-x+k , j-y+l);
+                       }
+                   }
+                     
+               }
+               catch(IndexOutOfBoundsException e) // Si en dehors de l'image, on pourrait faire mieux que 0
+               {
+                   for(k = 0; k < taille; k++)
+                   {
+                       for(l = 0; l < taille; l++)
+                       {
+                           P[k][l] = 0;
+                       }
+                   }
+               }
+
+               // Grayscale pour chaque pixel
+               for(k = 0; k < taille; k++)
+                {
+                    for(l = 0; l < taille; l++)
+                    {
+                        r[k][l] = (P[k][l]>>16)&0xff;
+                        b[k][l] = (P[k][l]>>8)&0xff; 
+                        g[k][l] = P[k][l]&0xff;
+                    }
+                }
+
+               /*for(k = 0; k < taille; k++)
+                {
+                    for(l = 0; l < taille; l++)
+                    {
+                        System.out.print(" Avg[k][l] = " + Avg[k][l]);
+                    }
+                        System.out.println(" ");
+                }
+               System.out.println(" ");*/
+               
+               // Application du masque
+               resR = 0;
+               resB = 0;
+               resG = 0;
+               for(k = 0; k < taille; k++)
+                {
+                    for(l = 0; l < taille; l++)
+                    {
+                        resR += (masque[k][l]* (double)(r[k][l]));
+                        resB += (masque[k][l]* (double)(b[k][l]));
+                        resG += (masque[k][l]* (double)(g[k][l]));
+                    }
+                }
+               //System.out.println("res = " + res);
+
+               resR /= (double)tot; // Ne pas oublier de diviser par le total pour récupérer des valeurs cohérentes
+               resB /= (double)tot;
+               resG /= (double)tot;
+               
+               resR = Math.abs(resR);
+               resB = Math.abs(resB);
+               resG = Math.abs(resG);
+                
+               pixel = ( (255<<24) | ((int)resR<<16) | ((int)resB<<8) | (int)resG); 
+               
+               tmp.setRGB(i, j, pixel); // On met le pixel dans la nouvelle image
+        
+            }
         }
+        
+        setImgTmp(copyImage(tmp));
+        ImageIcon imageIcon = new ImageIcon(tmp);
+
+        jl_imageDest.setIcon(imageIcon);
     }
     
     public void KirschFilter(String centre)
@@ -1037,8 +1184,6 @@ public class MainWindow extends javax.swing.JFrame {
                int res = -Avg[0] + Avg[2] -2*Avg[3] + 2*Avg[5] - Avg[6] + Avg[8];
                 res /= 4;
                 res = Math.abs(res);
-                
-                res = (res<<24) | (res<<16) | (res<<8) | res; 
                 
                 int res2 = -Avg[0]  -2*Avg[1] - Avg[2] + Avg[6] + 2*Avg[7] + Avg[8];
                 res2 /= 4;
@@ -1573,18 +1718,18 @@ public class MainWindow extends javax.swing.JFrame {
     
     public static BufferedImage toBufferedImage(Image img)
     {
-    if (img instanceof BufferedImage)
-    {
-        return (BufferedImage) img;
-    }
+        if (img instanceof BufferedImage)
+        {
+            return (BufferedImage) img;
+        }
 
-    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-  
-    Graphics2D bGr = bimage.createGraphics();
-    bGr.drawImage(img, 0, 0, null);
-    bGr.dispose();
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
-    return bimage;
+        Graphics2D bGr = bimage.createGraphics();
+        bGr.drawImage(img, 0, 0, null);
+        bGr.dispose();
+
+        return bimage;
     }
     
     public void applyImage(BufferedImage img)
@@ -1731,23 +1876,26 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton JB_reset;
     private javax.swing.JComboBox<String> JCB_Kirsch;
     private javax.swing.JComboBox<String> JCB_Roberts;
+    private javax.swing.JMenuItem JMI_Exit;
     private javax.swing.JTextField JTF_Morpho;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JButton jb_DestToSrc;
     private javax.swing.JButton jb_neg;
     private javax.swing.JButton jb_zoom;
+    private javax.swing.JLabel jl_ROI;
     private javax.swing.JLabel jl_Threshold;
     private javax.swing.JLabel jl_fois;
     private javax.swing.JLabel jl_imageDest;
     private javax.swing.JLabel jl_imageSource;
+    private javax.swing.JLabel jl_sigma;
     private javax.swing.JLabel jl_threshold;
     private javax.swing.JScrollPane jsc_imgdest;
     private javax.swing.JScrollPane jsp_imgsrc;
+    private javax.swing.JTextField jtf_sigma;
     private javax.swing.JTextField jtf_zoom_coeff;
     private javax.swing.JSlider slider_threshold1;
     // End of variables declaration//GEN-END:variables

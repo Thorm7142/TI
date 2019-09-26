@@ -5,28 +5,20 @@
  */
 package imageprocessing;
 
-import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
-
 /**
  *
  * @author alexa
  */
-public class JDialogROI extends javax.swing.JDialog {
+public class JDAide extends javax.swing.JDialog {
 
     /**
-     * Creates new form JDialogROI
+     * Creates new form JDAide
      */
-    public JDialogROI(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
-        initComponents();
-    }
-    
-    public JDialogROI(java.awt.Frame parent, boolean modal, BufferedImage img) {
+    public JDAide(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
-        jl_ROI.setIcon(new ImageIcon(img));
+        jl_aide.setText("<html> OK Permet de lock la valeur pour la range sélectionnée <br> Reset reprend l'image de base présente dans la fenêtre principale <br> Il est dès lors possible d'overlapper les valeurs <br> Les slidebar indiquent la valeur par laquelle on remplace <br> De indique la valeur de départ et À la valeur plafond </html>");  
     }
 
     /**
@@ -38,9 +30,19 @@ public class JDialogROI extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jl_ROI = new javax.swing.JLabel();
+        jl_aide = new javax.swing.JLabel();
+        JB_Aide_OK = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        jl_aide.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+
+        JB_Aide_OK.setText("OK");
+        JB_Aide_OK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_Aide_OKActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -48,19 +50,29 @@ public class JDialogROI extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jl_ROI, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+                .addComponent(jl_aide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(175, 175, 175)
+                .addComponent(JB_Aide_OK, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(192, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jl_ROI, javax.swing.GroupLayout.DEFAULT_SIZE, 573, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jl_aide, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(JB_Aide_OK)
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void JB_Aide_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_Aide_OKActionPerformed
+        dispose();
+    }//GEN-LAST:event_JB_Aide_OKActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,20 +91,20 @@ public class JDialogROI extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JDialogROI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDAide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JDialogROI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDAide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JDialogROI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDAide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JDialogROI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JDAide.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                JDialogROI dialog = new JDialogROI(new javax.swing.JFrame(), true);
+                JDAide dialog = new JDAide(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -105,6 +117,7 @@ public class JDialogROI extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jl_ROI;
+    private javax.swing.JButton JB_Aide_OK;
+    private javax.swing.JLabel jl_aide;
     // End of variables declaration//GEN-END:variables
 }
