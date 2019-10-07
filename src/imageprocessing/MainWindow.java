@@ -17,6 +17,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -112,8 +113,18 @@ public class MainWindow extends javax.swing.JFrame {
         jl_ROI = new javax.swing.JLabel();
         jtf_sigma = new javax.swing.JTextField();
         jl_sigma = new javax.swing.JLabel();
+        JB_Src_to_dest = new javax.swing.JButton();
+        JB_Egalisation = new javax.swing.JButton();
+        JB_Expansion = new javax.swing.JButton();
+        jtf_exp_x = new javax.swing.JTextField();
+        jtf_exp_y = new javax.swing.JTextField();
+        jl_x = new javax.swing.JLabel();
+        jl_y = new javax.swing.JLabel();
+        jl_histo_dst = new javax.swing.JLabel();
+        jl_histo_src = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        JMI_Save = new javax.swing.JMenuItem();
         JMI_Exit = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -145,6 +156,11 @@ public class MainWindow extends javax.swing.JFrame {
         jsp_imgsrc.setViewportView(jl_imageSource);
 
         jl_imageDest.setMaximumSize(new java.awt.Dimension(500, 500));
+        jl_imageDest.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+            public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                jl_imageDestMouseWheelMoved(evt);
+            }
+        });
         jsc_imgdest.setViewportView(jl_imageDest);
 
         jb_zoom.setText("Zoom");
@@ -254,6 +270,7 @@ public class MainWindow extends javax.swing.JFrame {
         });
 
         jl_threshold.setFont(new java.awt.Font("Sylfaen", 0, 18)); // NOI18N
+        jl_threshold.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jButton1.setText("↓");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -325,8 +342,41 @@ public class MainWindow extends javax.swing.JFrame {
 
         jl_sigma.setText("Sigma : ");
 
+        JB_Src_to_dest.setText(">>");
+        JB_Src_to_dest.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_Src_to_destActionPerformed(evt);
+            }
+        });
+
+        JB_Egalisation.setText("Egalisation");
+        JB_Egalisation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_EgalisationActionPerformed(evt);
+            }
+        });
+
+        JB_Expansion.setText("Expansion");
+        JB_Expansion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JB_ExpansionActionPerformed(evt);
+            }
+        });
+
+        jl_x.setText("x : ");
+
+        jl_y.setText("y : ");
+
         jMenu1.setText("File");
         jMenu1.setToolTipText("");
+
+        JMI_Save.setText("Save");
+        JMI_Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JMI_SaveActionPerformed(evt);
+            }
+        });
+        jMenu1.add(JMI_Save);
 
         JMI_Exit.setText("Exit");
         JMI_Exit.addActionListener(new java.awt.event.ActionListener() {
@@ -345,165 +395,224 @@ public class MainWindow extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jsp_imgsrc, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 18, Short.MAX_VALUE)
-                        .addComponent(jb_DestToSrc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jsc_imgdest, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19))
-                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JB_SelectFile)
-                            .addComponent(JB_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(JB_Color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jb_neg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JB_Median, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JB_Mean, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(JBGreyscale, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jb_zoom)
-                                .addGap(12, 12, 12)
-                                .addComponent(jl_fois)
+                                .addComponent(JB_SelectFile)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jtf_zoom_coeff, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(81, 81, 81)
-                                .addComponent(slider_threshold1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(JB_reset, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(JB_Prewitt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(JB_Sobel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(JB_Laplacian, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(JB_Color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jb_neg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JB_Median, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JB_Mean, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JBGreyscale))
+                                        .addGap(26, 26, 26)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(JB_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(JB_Multi_Treshold)
                                             .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jb_zoom)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jl_fois)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(JB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGap(4, 4, 4)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                    .addComponent(JB_Gauss, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(JB_Roberts, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))))
-                                        .addGap(4, 4, 4)
+                                                .addComponent(jtf_zoom_coeff, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(JB_Prewitt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JB_Laplacian, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JB_Sobel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JB_Gauss, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JB_Roberts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(JB_Kirsch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(32, 32, 32)
+                                        .addComponent(jl_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(5, 5, 5)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel2)
-                                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addGap(19, 19, 19)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(JCB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(JCB_Roberts, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(19, 19, 19)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(JCB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(JCB_Roberts, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addGroup(layout.createSequentialGroup()
                                                 .addComponent(jl_sigma)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jtf_sigma, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(JB_Multi_Treshold)
+                                                .addComponent(jtf_sigma, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(JB_Expansion, javax.swing.GroupLayout.Alignment.TRAILING))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(JB_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(51, 51, 51)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                    .addComponent(jl_y, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jl_x))
+                                                .addGap(72, 72, 72))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGap(35, 35, 35)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jtf_exp_x, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addComponent(jtf_exp_y, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(slider_threshold1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(JB_Dilatation1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(JB_Erosion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(JB_Ouverture, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(JB_Fermeture))
+                                        .addGap(75, 75, 75)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jl_threshold, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(JB_Dilatation1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(JB_Erosion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(JB_Ouverture, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE))
-                                    .addComponent(JB_Fermeture))))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jl_threshold, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 59, Short.MAX_VALUE)
-                            .addComponent(JTF_Morpho))
-                        .addGap(0, 27, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jl_Threshold)
-                .addGap(167, 167, 167))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
-                .addComponent(jl_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(JTF_Morpho, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jl_Threshold)
+                                .addGap(145, 145, 145))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jsp_imgsrc, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(jl_histo_src, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(JB_Egalisation)
+                                .addGap(75, 75, 75)
+                                .addComponent(jl_histo_dst, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jb_DestToSrc, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JB_Src_to_dest, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(64, 64, 64)
+                                .addComponent(jsc_imgdest, javax.swing.GroupLayout.PREFERRED_SIZE, 313, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(13, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jl_Threshold)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(slider_threshold1, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
-                    .addComponent(jl_threshold, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jb_zoom)
-                        .addComponent(jl_fois)
-                        .addComponent(jtf_zoom_coeff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(JBGreyscale))
-                    .addComponent(JB_SelectFile))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JB_Erosion)
-                            .addComponent(jButton1))
-                        .addGap(9, 9, 9)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JB_Dilatation1)
-                            .addComponent(JTF_Morpho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(JB_Ouverture))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(JB_SelectFile)
+                            .addComponent(JB_reset))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(JB_Sobel)
-                                .addComponent(JB_Kirsch)
-                                .addComponent(jLabel2)
-                                .addComponent(JCB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jb_neg))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addComponent(JB_reset)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JB_Prewitt)
-                            .addComponent(JB_Roberts)
-                            .addComponent(jLabel1)
-                            .addComponent(JCB_Roberts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(JB_Mean))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JB_Median)
-                            .addComponent(JB_Laplacian)
-                            .addComponent(JB_Gauss)
-                            .addComponent(jl_sigma)
-                            .addComponent(jtf_sigma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jb_zoom)
+                                        .addComponent(jl_fois)
+                                        .addComponent(jtf_zoom_coeff, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(JBGreyscale))
+                                    .addComponent(JB_Kirsch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jb_neg)
+                                    .addComponent(JB_ROI))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(JB_Mean)
+                                    .addComponent(JB_Multi_Treshold))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(JB_Laplacian))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(JCB_Kirsch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(9, 9, 9)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(JB_Roberts)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(JB_Gauss)
+                                            .addComponent(jl_sigma)
+                                            .addComponent(jtf_sigma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(JB_Median))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(JCB_Roberts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(17, 17, 17)
+                                        .addComponent(JB_Expansion))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jtf_exp_x, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jl_x))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jtf_exp_y, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jl_y)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(JB_Prewitt)
+                                            .addComponent(JB_Color))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(JB_Sobel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jl_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addComponent(jl_Threshold)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(slider_threshold1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jl_threshold, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(JTF_Morpho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(JB_Erosion)
+                                .addGap(9, 9, 9)
+                                .addComponent(JB_Dilatation1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(JB_Ouverture)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(JB_Fermeture)))))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 5, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(JB_Color)
-                            .addComponent(JB_ROI)
-                            .addComponent(JB_Multi_Treshold)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(JB_Fermeture, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(16, 16, 16)
-                .addComponent(jl_ROI, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jsp_imgsrc)
-                        .addComponent(jsc_imgdest, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(184, 184, 184)
+                        .addGap(161, 161, 161)
                         .addComponent(jb_DestToSrc)
-                        .addGap(141, 141, 141))))
+                        .addGap(18, 18, 18)
+                        .addComponent(JB_Src_to_dest))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jsp_imgsrc, javax.swing.GroupLayout.DEFAULT_SIZE, 342, Short.MAX_VALUE)
+                            .addComponent(jsc_imgdest))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jl_histo_src, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jl_histo_dst, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(JB_Egalisation)
+                        .addGap(69, 69, 69))))
         );
 
         pack();
@@ -535,6 +644,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void JBGreyscaleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JBGreyscaleActionPerformed
         Greyscale(jl_imageDest, null);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JBGreyscaleActionPerformed
 
     private void JMI_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMI_ExitActionPerformed
@@ -559,6 +669,7 @@ public class MainWindow extends javax.swing.JFrame {
             
             jl_imageDest.setIcon(imageIcon);
         }
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_jb_zoomActionPerformed
     
     
@@ -574,10 +685,13 @@ public class MainWindow extends javax.swing.JFrame {
         
         jl_imageSource.setIcon(imageIcon);
         
+        updateHistogram(copyImage(getImgSrc()), jl_histo_dst);
+        
     }//GEN-LAST:event_jb_DestToSrcActionPerformed
 
     private void jb_negActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jb_negActionPerformed
         Negative();
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_jb_negActionPerformed
 
     private void slider_threshold1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_slider_threshold1StateChanged
@@ -590,32 +704,39 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void JB_MeanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MeanActionPerformed
         MeanFilter();
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_MeanActionPerformed
 
     private void JB_MedianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_MedianActionPerformed
         MedianFilter();
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_MedianActionPerformed
 
     private void JB_SobelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_SobelActionPerformed
         SobelFilter();
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_SobelActionPerformed
 
     private void JB_PrewittActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_PrewittActionPerformed
         PrewittFilter();
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_PrewittActionPerformed
 
     private void JB_LaplacianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_LaplacianActionPerformed
         LaplacianFilter();
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_LaplacianActionPerformed
 
     private void JB_RobertsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_RobertsActionPerformed
         String centre = JCB_Roberts.getModel().getSelectedItem().toString();
         RobertCrossFilter(centre);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_RobertsActionPerformed
 
     private void JB_KirschActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_KirschActionPerformed
         String centre = JCB_Kirsch.getModel().getSelectedItem().toString();
         KirschFilter(centre);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_KirschActionPerformed
 
     private void JB_ErosionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_ErosionActionPerformed
@@ -628,6 +749,7 @@ public class MainWindow extends javax.swing.JFrame {
             int val = Integer.parseInt(JTF_Morpho.getText());
             Erosion(val, null);
         }
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_ErosionActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -648,6 +770,7 @@ public class MainWindow extends javax.swing.JFrame {
             int val = Integer.parseInt(JTF_Morpho.getText());
             Dilatation(val, null);
         }
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_Dilatation1ActionPerformed
 
     private void JB_OuvertureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_OuvertureActionPerformed
@@ -667,6 +790,7 @@ public class MainWindow extends javax.swing.JFrame {
             Dilatation(val, copyImage(img));
             setImgSrc(copyImage(getImgOri()));
         }
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_OuvertureActionPerformed
 
     private void JB_FermetureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_FermetureActionPerformed
@@ -686,6 +810,7 @@ public class MainWindow extends javax.swing.JFrame {
             Erosion(val, img);
             setImgSrc(copyImage(getImgOri()));
         }
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_FermetureActionPerformed
 
     private void JB_resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_resetActionPerformed
@@ -694,16 +819,20 @@ public class MainWindow extends javax.swing.JFrame {
         ImageIcon imageIcon = new ImageIcon(getImgSrc());
         
         jl_imageSource.setIcon(imageIcon);
+        
+        updateHistogram(copyImage(getImgOri()), jl_histo_dst);
     }//GEN-LAST:event_JB_resetActionPerformed
 
     private void JB_Multi_TresholdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_Multi_TresholdActionPerformed
         multiThresholdWindow mtw = new multiThresholdWindow(this);
         mtw.setVisible(true);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_Multi_TresholdActionPerformed
 
     private void JB_ColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_ColorActionPerformed
         ColorChooserWindow ccw = new ColorChooserWindow(this);
         ccw.setVisible(true);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_ColorActionPerformed
 
     private void JB_ROIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_ROIActionPerformed
@@ -729,6 +858,7 @@ public class MainWindow extends javax.swing.JFrame {
             setImgTmp(copyImage(img));
             Icon ico = new ImageIcon(img);
             jl_imageDest.setIcon(ico); 
+            updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
             ROI = 0;
         }
     }//GEN-LAST:event_jl_imageSourceMouseReleased
@@ -741,8 +871,106 @@ public class MainWindow extends javax.swing.JFrame {
     private void JB_GaussActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_GaussActionPerformed
         double sigma = Double.parseDouble(jtf_sigma.getText());
         GaussianFilter(sigma);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
     }//GEN-LAST:event_JB_GaussActionPerformed
+
+    private void JMI_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMI_SaveActionPerformed
+         
+        JFileChooser fileChooser = new JFileChooser();
+        
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("jpg", "jpg"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("png", "png"));
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("bmp", "bmp"));
+        
+        fileChooser.setAcceptAllFileFilterUsed(false); // On empêche à l'utilsateur de choisir d'autres types,é vite de devoir check par après
+        fileChooser.setDialogTitle("Specify a file to save");
+        File fileToSave = null;
+
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) 
+        {
+            fileToSave = getSelectedFileWithExtension(fileChooser);
+            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+        }
+        
+
+        BufferedImage bi = copyImage(getImgTmp());  // retrieve image
+        //File outputfile = new File("saved.png");
+        try {
+            ImageIO.write(bi, "png", fileToSave);
+        } catch (IOException ex) {
+            System.out.println("Erreur d'écriture");
+        }
+
+    }//GEN-LAST:event_JMI_SaveActionPerformed
+
+    private void jl_imageDestMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_jl_imageDestMouseWheelMoved
+        BufferedImage img =null;
+        if(getImgTmp() == null)
+        {
+            setImgTmp(copyImage(getImgSrc()));
+        }
+        img = copyImage(getImgTmp());
+        double coeff = 1.0;
+        
+        if (evt.getWheelRotation() < 0) {
+            coeff *= 1.1;
+        } else {
+            coeff *= 0.9;
+        }
+
+        Image dimg = img.getScaledInstance((int)(img.getWidth()*coeff), (int)(img.getHeight()*coeff), Image.SCALE_DEFAULT);
+
+        BufferedImage tmp = copyImage(toBufferedImage(dimg));          
+
+        setImgTmp(copyImage(tmp));
+
+        ImageIcon imageIcon = new ImageIcon(tmp);
+
+        jl_imageDest.setIcon(imageIcon);
+    }//GEN-LAST:event_jl_imageDestMouseWheelMoved
+
+    private void JB_Src_to_destActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_Src_to_destActionPerformed
+        setImgTmp(copyImage(getImgSrc()));
+        
+        ImageIcon imageIcon = new ImageIcon(getImgTmp());
+        
+        jl_imageDest.setIcon(imageIcon);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
+    }//GEN-LAST:event_JB_Src_to_destActionPerformed
+
+    private void JB_EgalisationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_EgalisationActionPerformed
+        Egalisation();
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
+    }//GEN-LAST:event_JB_EgalisationActionPerformed
+
+    private void JB_ExpansionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JB_ExpansionActionPerformed
+        float x, y;
+        
+        x = Float.parseFloat(jtf_exp_x.getText());
+        y = Float.parseFloat(jtf_exp_y.getText());
+        
+        Expansion(x, y);
+        updateHistogram(copyImage(getImgTmp()), jl_histo_dst);
+    }//GEN-LAST:event_JB_ExpansionActionPerformed
       
+    public static File getSelectedFileWithExtension(JFileChooser c) {
+    File file = c.getSelectedFile();
+    if (c.getFileFilter() instanceof FileNameExtensionFilter) {
+        String[] exts = ((FileNameExtensionFilter)c.getFileFilter()).getExtensions();
+        String nameLower = file.getName().toLowerCase();
+        for (String ext : exts) { 
+            if (nameLower.endsWith('.' + ext.toLowerCase())) {
+                return file;
+            }
+        }
+
+        file = new File(file.toString() + '.' + exts[0]);
+    }
+    return file;
+}
+    
     public void setImage(JLabel jl, String str)
     {   
         // Dessine une image du chemin str dans le label jl
@@ -765,13 +993,205 @@ public class MainWindow extends javax.swing.JFrame {
         ImageIcon imageIcon = new ImageIcon(img);
         
         jl.setIcon(imageIcon);
+        updateHistogram(copyImage(getImgSrc()), jl_histo_src);
     }
     
-    public void Expansion()
+    private void updateHistogram(BufferedImage img, JLabel histog)
     {
+        int[] values = new int[256];
+        int highValue = 0;
         
+        values = getPixelValues(img);
+        
+        for(int i = 0; i < 256; i++)
+        {
+            if(values[i] > values[highValue])
+            {
+                highValue = i;
+            }
+        }
+        
+        BufferedImage histo = new BufferedImage(histog.getWidth(), histog.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = histo.createGraphics();
+        
+        g2d.setColor(Color.RED);
+        g2d.fillRect(0, 0, histo.getWidth(), histo.getHeight());
+        for(int i = 0; i < values.length; i++)
+        {
+            g2d.setColor(new Color(i, i, i));
+            g2d.drawLine(i, histo.getHeight(), i, histo.getHeight() - (int) ((double)values[i]/values[highValue]*histo.getHeight()));
+        }
+        g2d.dispose();
+        histog.setIcon(new ImageIcon(histo));
+    }
+    
+    private static int get(int self, int n)
+    {
+        return (self >> (n * 8)) & 0xFF;
+    }
+ 
+    private static float lerp(float s, float e, float t)
+    {
+        return s + (e - s) * t;
+    }
+ 
+    private static float blerp(final Float c00, float c10, float c01, float c11, float tx, float ty)
+    {
+        return lerp(lerp(c00, c10, tx), lerp(c01, c11, tx), ty);
+    }    
+    
+    public void Expansion(float scaleX, float scaleY)
+    {
+        BufferedImage img = copyImage(getImgSrc());
+        int newWidth = (int) (img.getWidth() * scaleX);
+        int newHeight = (int) (img.getHeight() * scaleY);
+        BufferedImage newImage = new BufferedImage(newWidth, newHeight, img.getType());
+        for (int x = 0; x < newWidth; ++x) {
+            for (int y = 0; y < newHeight; ++y) {
+                float gx = ((float) x) / newWidth * (img.getWidth() - 1);
+                float gy = ((float) y) / newHeight * (img.getHeight() - 1);
+                int gxi = (int) gx;
+                int gyi = (int) gy;
+                int rgb = 0;
+                int c00 = img.getRGB(gxi, gyi);
+                int c10 = img.getRGB(gxi + 1, gyi);
+                int c01 = img.getRGB(gxi, gyi + 1);
+                int c11 = img.getRGB(gxi + 1, gyi + 1);
+                for (int i = 0; i <= 2; ++i) {
+                    float b00 = get(c00, i);
+                    float b10 = get(c10, i);
+                    float b01 = get(c01, i);
+                    float b11 = get(c11, i);
+                    int ble = ((int) blerp(b00, b10, b01, b11, gx - gxi, gy - gyi)) << (8 * i);
+                    rgb = rgb | ble;
+                }
+                newImage.setRGB(x, y, rgb);
+            }
+        }
+        
+        setImgTmp(copyImage(newImage));
+        ImageIcon imageIcon = new ImageIcon(newImage);
+
+        jl_imageDest.setIcon(imageIcon);
     }
 
+    public void Egalisation()
+    {
+        BufferedImage img = copyImage(getImgSrc());
+        BufferedImage tmp = copyImage(getImgSrc());
+        
+        int[] pixels = new int[256];
+        int pixtemp;
+        int r,g,b;
+        
+        pixels = courbeTonale();
+        
+        int width = img.getWidth();
+        int height = img.getHeight();
+        
+        for (int i = 0; i < width; i++) 
+        { 
+            for (int j = 0; j < height; j++) 
+            { 
+                pixtemp = img.getRGB(i, j);
+                
+                r = (pixtemp>>16)&0xff;
+                b = (pixtemp>>8)&0xff; 
+                g = pixtemp&0xff;
+
+                pixtemp = (r+b+g)/3;
+                
+                pixtemp = pixels[pixtemp]; // On remplace par la nouvelle valeur, via la courbe tonale
+                
+                pixtemp = (255<<24) | (pixtemp<<16) | (pixtemp<<8) | pixtemp;
+                
+                tmp.setRGB(i, j, pixtemp); 
+            }   
+        }
+        setImgTmp(copyImage(tmp));
+        ImageIcon imageIcon = new ImageIcon(tmp);
+
+        jl_imageDest.setIcon(imageIcon);
+    }
+    
+    public int[] courbeTonale()
+    {
+        int[] pixels = new int[255];
+        int[] replace = new int[256];
+        pixels = getPixelValues(copyImage(getImgSrc()));
+        
+        int indice0 = 0;
+        int indicediff;
+        int difference = 0;
+        int increment = 0;
+        
+        for(int i = 0; i < 255; i++)
+        {
+            if(pixels[i] != 0)
+            {
+                difference++;
+            }
+        } // On a le nombre de d'éléments différents de 0
+        
+        increment = 255/difference;
+        
+        int j = 0;
+        for(int i = 0; i < 256; i++) // Pour chaque élément, on met à l'indice qui le représente la nouvelle valeur
+        {
+            if(pixels[i] != 0)
+            {
+                replace[i] = j*increment;                
+                j++;
+            }
+        }
+        
+        while(j <256)
+        {
+            replace[j] = 255;
+            j++;
+        } // Au dessus c'est 255
+        
+        return replace; 
+    }
+    
+    /*
+        On récupère la quantité de chaque pixel
+    */
+    public int[] getPixelValues(BufferedImage img)
+    {
+        
+        int[] pixels = new int[256];
+        int pixtemp;
+        int r, g, b;
+        
+        for(int i = 0;i < 256; i++)
+        {
+            pixels[i] = 0;
+        }
+        
+        int width = img.getWidth(); 
+        int height = img.getHeight(); 
+  
+        for (int i = 0; i < width; i++) 
+        { 
+            for (int j = 0; j < height; j++) 
+            { 
+                pixtemp = img.getRGB(i, j);
+                
+                r = (pixtemp>>16)&0xff;
+                b = (pixtemp>>8)&0xff; 
+                g = pixtemp&0xff;
+
+                pixtemp = (r+b+g)/3;
+
+                pixels[pixtemp] ++;
+            }   
+        }
+        
+       return pixels;
+        
+    }
+    
     public double Gauss(int x, int y, double sigma)
     {
         double coeff = 1/(2*Math.PI*sigma*sigma);
@@ -877,16 +1297,6 @@ public class MainWindow extends javax.swing.JFrame {
                         g[k][l] = P[k][l]&0xff;
                     }
                 }
-
-               /*for(k = 0; k < taille; k++)
-                {
-                    for(l = 0; l < taille; l++)
-                    {
-                        System.out.print(" Avg[k][l] = " + Avg[k][l]);
-                    }
-                        System.out.println(" ");
-                }
-               System.out.println(" ");*/
                
                // Application du masque
                resR = 0;
@@ -1859,7 +2269,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton JBGreyscale;
     private javax.swing.JButton JB_Color;
     private javax.swing.JButton JB_Dilatation1;
+    private javax.swing.JButton JB_Egalisation;
     private javax.swing.JButton JB_Erosion;
+    private javax.swing.JButton JB_Expansion;
     private javax.swing.JButton JB_Fermeture;
     private javax.swing.JButton JB_Gauss;
     private javax.swing.JButton JB_Kirsch;
@@ -1873,10 +2285,12 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton JB_Roberts;
     private javax.swing.JButton JB_SelectFile;
     private javax.swing.JButton JB_Sobel;
+    private javax.swing.JButton JB_Src_to_dest;
     private javax.swing.JButton JB_reset;
     private javax.swing.JComboBox<String> JCB_Kirsch;
     private javax.swing.JComboBox<String> JCB_Roberts;
     private javax.swing.JMenuItem JMI_Exit;
+    private javax.swing.JMenuItem JMI_Save;
     private javax.swing.JTextField JTF_Morpho;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -1889,12 +2303,18 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JLabel jl_ROI;
     private javax.swing.JLabel jl_Threshold;
     private javax.swing.JLabel jl_fois;
+    private javax.swing.JLabel jl_histo_dst;
+    private javax.swing.JLabel jl_histo_src;
     private javax.swing.JLabel jl_imageDest;
     private javax.swing.JLabel jl_imageSource;
     private javax.swing.JLabel jl_sigma;
     private javax.swing.JLabel jl_threshold;
+    private javax.swing.JLabel jl_x;
+    private javax.swing.JLabel jl_y;
     private javax.swing.JScrollPane jsc_imgdest;
     private javax.swing.JScrollPane jsp_imgsrc;
+    private javax.swing.JTextField jtf_exp_x;
+    private javax.swing.JTextField jtf_exp_y;
     private javax.swing.JTextField jtf_sigma;
     private javax.swing.JTextField jtf_zoom_coeff;
     private javax.swing.JSlider slider_threshold1;
